@@ -1,22 +1,31 @@
 exports.Total = function(array){
+  // Set up a running total
   var total = 0;
+  // Go through each element
   for (var i = 0; i < array.length; i++) {
+    // Add each item to the total
     total += array[i];
   }
+  // Return the total
   return total;
 }
 exports.Mean = function(array) {
+// Return the array total divided by the amount of elements in the array
 return Total(array)/array.length;
 }
 exports.length = function(array) {
+  // Return the amoutn of elements in the array
   return array.length;
 }
 exports.Median = function(array) {
+// Sort the array into Ascending Order
 array = array.sort(function(a, b){return a-b});
+// If the array has an even amount of elements
 if(array.length%2 == 0){
-  console.log(summation);
+  // Return the average of the two middle elements
   return (array[(array.length/2)-1] + array[(array.length/2)])/2;
 }
+//
 if(array.length%2 != 0){
   return array[Math.trunc(array.length/2)];
 }
