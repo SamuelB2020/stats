@@ -63,5 +63,46 @@ exports.getMin = function(array){
 }
 exports.getMax = function(array){
   array = array.sort(function(a,b){return a-b});
-  return array[array.length];
+  return array[array.length-1];
+}
+exports.alignMarks = function (b6, b5, b4, b3, b2, rawMark){
+  if(rawMark >= b6){
+    return exports.linearTransformation(b6,90,100,100,rawMark);
+  }
+  else if (rawMark < b6 && rawMark >= b5){
+    return exports.linearTransformation(b5, 80,(b6-1),89,rawMark)
+  }
+  else if (rawMark < b5 && rawMark >= b4){
+    return exports.linearTransformation(b4, 70,(b5-1),79,rawMark)
+  }
+  else if (rawMark < b4 && rawMark >= b3){
+    return exports.linearTransformation(b3, 60,(b4-1),69,rawMark)
+  }
+  else if (rawMark < b3 && rawMark >= b2){
+    return exports.linearTransformation(b2, 50,(b3-1),59,rawMark)
+  }
+  else if (rawMark < b2){
+    return exports.linearTransformation(0,0,(b2-1),49,rawMark)
+  }
+}
+exports.moderateMarks = function (assessmentMarks, examMedian, examHighest, examLowest) {
+  var assessmentHighest = exports.getMax(assessmentMarks); 
+  var assessmentLowest = exports.getMin(assessmentMarks);
+  var assessmentMedian = exports.Median(assessmentMarks);
+  for (let i = 0; i < assessmentMarks.length; i++) {
+    var moderatedMark = exports.quadraticTransformation(assessmentLowest,examLowest,assessmentMedian,examMedian,assessmentHighest,examHighest,assessmentMarks[i])
+    assessmentMarks[i] = moderatedMark;
+  }
+  return assessmentMarks; 
+}
+exports.linearTransformation = function(x1,y1,x2,y2,x){
+  var m = (y2-y1)/(x2-x1)
+  var b = y1 - m*x1;
+  return (m*x) + b;
+}
+exports.quadraticTransformation = function (x1, y1, x2, y2, x3, y3, x){
+  var fraction1 = (y1*(x-x2)*(x-x3))/((x1-x2)*(x1-x3));
+  var fraction2 = (y2*(x-x1)*(x-x3))/((x2-x1)*(x2-x3));
+  var fraction3 = (y3*(x-x1)*(x-x2))/((x3-x1)*(x3-x2));
+  return fraction1 + fraction2 + fraction3;
 }
